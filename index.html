@@ -40,8 +40,8 @@
                       <input class = "form-control" type="text" id = "nombre-txt">
                     </div>
                     <div class="mb-3">
-                      <label class = "form-label" for="Descripción-txt">Descripción</label>
-                      <input class = "form-control" type="text" id = "Descripción-txt">
+                      <label class = "form-label" for="descripcion-txt">Descripción del Pokemón</label>
+                      <textarea  id="descripcion-txt" ></textarea>
                     </div>
 
                     <div class="mb-3">
@@ -57,6 +57,7 @@
                       <div class = "form-chek form-check-inline"> 
                           <label for="Legendarios-no" class= "form-check-label"> No </label> 
                           <input type="radio"
+                            checked 
                             class="form-check-input"
                             name="Legendarios-rb"
                             id="Legendarios-no">
@@ -103,8 +104,8 @@
                   <thead>
 
                     <tr>  <!--Salto de fila-->
-                          <!--Crear celdas-->
-                          <th>NRO</th>
+                          
+                          <th>NRO</th>  <!--Crear celdas-->
                           <th>Nombre</th>
                           <th>Tipo</th>
                           <th>Descripción</th>
@@ -142,8 +143,9 @@
     </main>
     <!--Todos los archivos alfinal del body-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src= "Vendor/tinymce/js/tinymce/tinymce.min.js"> </script> <!--Plugin antes del codigo-->
     <script src = "js/index.js"></script>
-
-    0
+    
+    
   </body>
 </html>
