@@ -15,10 +15,28 @@ tinymce.init({
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
   });
   
-const pokemones = [];
+const pokemones = []; // Crear arreglo. 
+
+const eliminarPokemon = async function(){  // CREAR FUNCIÓN TABLA
+  let res = await Swal.fire({
+    title : "Desea enviar al profesor oak " +  pokemones[this.nro].nombre + "?" , 
+    showCancelButton: true,
+    confirmButtonText:"Si , enviar!"
+  });
+  if(res.isConfirmed){
+    pokemones.splice(this.nro , 1);
+    cargarTabla();
+    Swal.fire("Pokemon enviado al profesor oak");
+
+  }else{
+    Swal.fire("Operación cancelada");
+  }
+};
+
 const cargarTabla = ()=>{               // CREAR FUNCIÓN TABLA
   // 1. obtener una referencia a la tabla
   let tbody = document.querySelector("#tabla-tbody");
+  
   // Eliminar todos los elem. que tenga el tbody.
   tbody.innerHTML = "";
   // 2. recorrer la lista de pokemones
@@ -31,12 +49,17 @@ const cargarTabla = ()=>{               // CREAR FUNCIÓN TABLA
       tdNro.innerText = (i+1);  // Definiendo el texto que quedara.
       let tdNombre   = document.createElement("td");
       tdNombre.innerText = p.nombre
-      let tdTipo     = document.createElement("td");
+      // cambiar color nombre
+      if(p.legendario){
+        tdNombre.classList.add("text-warning");
+      }
       
+      let tdTipo     = document.createElement("td");
+    
       let icono = document.createElement("i"); 
       if(p.tipo == "fuego"){
         // <i class="fas fa-fire"></i>
-        icono.classList.add("fas","fa-fire","text-danger","fax-3");  // agregar clases a un elemento
+        icono.classList.add("fas","fa-fire","text-danger","fa-3x");  // agregar clases a un elemento
       }else if (p.tipo == "planta"){
         // <i class="fas fa-leaf"></i>
         icono.classList.add("fas","fa-leaf","text-success","fa-3x");
@@ -55,8 +78,20 @@ const cargarTabla = ()=>{               // CREAR FUNCIÓN TABLA
 
       let tdDesc     = document.createElement("td");
       tdDesc.innerHTML = p.descripcion // Asignar un contenido sin comandos HTML
+     
       let tdAcciones = document.createElement("td");
-  
+      tdAcciones.classList.add("text-center");
+     
+      // Agreagar un boton al td de acciones
+      let boton = document.createElement("button"); // crear elemento
+      boton.classList.add("btn" , "btn-danger");    // cambiar elemento
+      boton.innerText = "Enviar al profesor oak"    // cambiar el texto de un elemento
+      boton.nro = i ; // agregar propiedad
+      boton.addEventListener("click" , eliminarPokemon)
+      
+      tdAcciones.appendChild(boton); // agregar un elemento dentro de arte
+
+
       // 5. agregar las celdas al tr
       tr.appendChild(tdNro);
       tr.appendChild(tdNombre);
@@ -65,6 +100,7 @@ const cargarTabla = ()=>{               // CREAR FUNCIÓN TABLA
       tr.appendChild(tdAcciones);
       // 6. agragar el tr a la tabla
       tbody.appendChild(tr);
+
   }
 };
 document.querySelector("#registrar-btn").addEventListener("click",() =>{
@@ -74,6 +110,7 @@ document.querySelector("#registrar-btn").addEventListener("click",() =>{
     let descripcion = tinymce.get("descripcion-txt").getContent();
     // checked indica si el radiobutton esta seleccionado
     let legendario = document.querySelector("#Legendarios-si").checked;
+     
     // El tipo se obtiene igual que los input
     let tipo = document.querySelector("#tipo-select").value;
     console.log("Hola Mundo", nombre,descripcion,legendario,tipo)
@@ -97,3 +134,12 @@ document.querySelector("#registrar-btn").addEventListener("click",() =>{
     Swal.fire("Exito!","Pokemon Registrado","success");
     
 } );
+
+document.querySelector("#limpiar-btn").addEventListener("click" , ()=>{
+  document.querySelector("#nombre-txt").value = "";
+  //document.querySelector("#descripcion-txt").value = ""; no funciona
+  tinymce.get("descripcion-txt").setContent("");
+  document.querySelector("#Legendarios-no").checked = true;
+  document.querySelector("#tipo-select").value = "planta";
+
+});
